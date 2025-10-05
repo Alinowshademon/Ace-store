@@ -5,49 +5,72 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>∆CE Store | Online Shopping</title>
 <style>
-body { margin:0; font-family:Arial, sans-serif; background:#f8f8f8; }
-header { background:#111; color:#fff; padding:18px 12px; text-align:center; }
-header h1 { margin:0; font-size:1.6rem; letter-spacing:2px; }
-nav { margin-top:8px; }
-nav a { color:white; margin:0 10px; text-decoration:none; font-weight:600; cursor:pointer; }
-.container { max-width:1100px; margin:20px auto; padding:12px; }
-.products { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-.product { background:#fff; padding:14px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.08); text-align:center; }
-.product img{ max-width:100%; border-radius:8px; height:200px; object-fit:cover; }
-.price{ font-size:1.05rem; color:#333; margin:10px 0; }
-.btn{ background:#111; color:#fff; padding:10px 14px; border:none; border-radius:6px; cursor:pointer; }
-.btn:disabled{ opacity:0.6; cursor:not-allowed; }
-footer{ background:#111; color:#fff; text-align:center; padding:14px; margin-top:28px; }
-#cart, #confirmed-orders { display:none; background:#fff; padding:16px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
-table{ width:100%; border-collapse:collapse; margin-bottom:12px; }
-th,td{ padding:8px; text-align:center; border-bottom:1px solid #eee; }
-.remove-btn{ background:#e53935; color:#fff; border:none; padding:6px 8px; border-radius:6px; cursor:pointer; }
-#checkout-modal { display:none; position:fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; }
-#checkout-modal .modal { background:#fff; width:360px; max-width:94%; padding:16px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.3); }
-.modal label{ display:block; margin:8px 0 6px; font-weight:600; font-size:0.9rem; }
-.modal input{ width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ddd; }
-.modal .actions{ display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
-.small-note{ font-size:0.85rem; color:#555; margin-top:8px; }
-@media (max-width:520px){ .product img{ height:160px } }
+  body { margin:0; font-family:Arial, sans-serif; background:#f8f8f8; }
+  header { background:#111; color:#fff; padding:18px 12px; text-align:center; position:relative; }
+  header h1 { margin:0; font-size:1.6rem; letter-spacing:2px; }
+  nav { margin-top:8px; }
+  nav a { color:white; margin:0 10px; text-decoration:none; font-weight:600; cursor:pointer; }
+  .user-info { position:absolute; top:10px; right:15px; font-size:0.9rem; color:#ccc; }
+  .container { max-width:1100px; margin:20px auto; padding:12px; }
+  .products { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+  .product { background:#fff; padding:14px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.08); text-align:center; }
+  .product img{ max-width:100%; border-radius:8px; height:200px; object-fit:cover; }
+  .price{ font-size:1.05rem; color:#333; margin:10px 0; }
+  .btn{ background:#111; color:#fff; padding:10px 14px; border:none; border-radius:6px; cursor:pointer; }
+  .btn:disabled{ opacity:0.6; cursor:not-allowed; }
+  footer{ background:#111; color:#fff; text-align:center; padding:14px; margin-top:28px; }
+
+  #cart, #confirmed-orders, #shop, #auth-section { display:none; background:#fff; padding:16px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
+
+  table{ width:100%; border-collapse:collapse; margin-bottom:12px; }
+  th,td{ padding:8px; text-align:center; border-bottom:1px solid #eee; }
+  .remove-btn{ background:#e53935; color:#fff; border:none; padding:6px 8px; border-radius:6px; cursor:pointer; }
+
+  #checkout-modal { display:none; position:fixed; left:0; right:0; top:0; bottom:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; }
+  #checkout-modal .modal { background:#fff; width:360px; max-width:94%; padding:16px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.3); }
+  .modal label{ display:block; margin:8px 0 6px; font-weight:600; font-size:0.9rem; }
+  .modal input{ width:100%; padding:8px 10px; border-radius:6px; border:1px solid #ddd; }
+  .modal .actions{ display:flex; gap:8px; margin-top:12px; justify-content:flex-end; }
+  .small-note{ font-size:0.85rem; color:#555; margin-top:8px; }
+
+  /* Auth styles */
+  #auth-section { text-align:center; max-width:380px; margin:60px auto; }
+  #auth-section input { width:90%; padding:10px; margin:8px 0; border-radius:6px; border:1px solid #ccc; }
+  #auth-section button { width:95%; padding:10px; margin-top:8px; border:none; border-radius:6px; background:#111; color:#fff; cursor:pointer; }
+  #auth-section p { font-size:0.9rem; margin-top:12px; color:#333; }
+  #auth-section a { color:#111; font-weight:600; cursor:pointer; }
+
+  @media (max-width:520px){ .product img{ height:160px } }
 </style>
 </head>
 <body>
 <header>
   <h1>∆CE Store</h1>
-  <div id="google-login-container"></div>
-  <div class="g_id_signin"></div>
   <nav>
     <a onclick="showShop()">Shop</a>
     <a onclick="showCart()">🛒 Cart (<span id="cart-count">0</span>)</a>
     <a onclick="showConfirmedOrders()">Confirmed Orders</a>
   </nav>
+  <div class="user-info" id="user-info"></div>
 </header>
 
+<!-- 🔐 Login / Signup Section -->
+<div id="auth-section">
+  <h2 id="auth-title">Login to Continue</h2>
+  <input id="auth-username" placeholder="Username" />
+  <input id="auth-password" type="password" placeholder="Password" />
+  <button onclick="handleAuth()">Login</button>
+  <p id="auth-switch">Don't have an account? <a onclick="toggleAuth()">Sign Up</a></p>
+  <p id="auth-error" style="color:red;"></p>
+</div>
+
+<!-- 🛍️ Shop Section -->
 <div class="container" id="shop">
   <h2>Featured Products</h2>
   <div class="products" id="products-list"></div>
 </div>
 
+<!-- 🛒 Cart Section -->
 <div class="container" id="cart">
   <h2>Your Cart</h2>
   <table>
@@ -57,16 +80,17 @@ th,td{ padding:8px; text-align:center; border-bottom:1px solid #eee; }
   <h3>Total: <span id="cart-total">৳0.00</span></h3>
   <div style="display:flex;gap:8px">
     <button class="btn" onclick="showShop()">Continue Shopping</button>
-    <button class="btn" id="btn-checkout" onclick="openCheckoutModal()" disabled>Checkout & Pay</button>
+    <button class="btn" id="btn-checkout" onclick="openCheckoutModal()">Checkout & Pay</button>
   </div>
   <p class="small-note" id="order-status">Order Status: <span>No orders yet</span></p>
 </div>
 
+<!-- ✅ Confirmed Orders Section -->
 <div class="container" id="confirmed-orders">
   <h2>Confirmed Orders</h2>
-  <p>Recent Confirmed Orders(update manually):</p>
+  <p>Recent Confirmed Orders (update manually):</p>
   <ul id="confirmed-list">
-    <li> Name :- Emon <br> Phone :- 0197XXXX882 <br>Order :- Stylish Jacket -1500 taka <br> Time :- 03:55 (Oct 4, 2025) </li>
+    <li>Name :- Emon <br> Phone :- 0197XXXX882 <br>Order :- Stylish Jacket -1500 taka <br> Time :- 03:55 (Oct 4, 2025)</li>
   </ul>
   <p class="small-note">After confirming your payment, check this page to see your Order Status.</p>
 </div>
@@ -75,13 +99,12 @@ th,td{ padding:8px; text-align:center; border-bottom:1px solid #eee; }
   <p>© 2025 ∆CE Store Online Shopping | All Rights Reserved</p>
 </footer>
 
+<!-- 💳 Checkout Modal -->
 <div id="checkout-modal">
   <div class="modal">
     <h3>Confirm Order & Payment</h3>
     <label for="cust-name">Your name</label>
     <input id="cust-name" placeholder="Full name (required)" />
-    <label for="cust-email">Email</label>
-    <input id="cust-email" placeholder="Gmail account" />
     <label for="cust-phone">Phone</label>
     <input id="cust-phone" placeholder="Bkash number (required)" /> 
     <label for="cust-uid">Game UID</label>
@@ -90,141 +113,219 @@ th,td{ padding:8px; text-align:center; border-bottom:1px solid #eee; }
       <button class="btn" onclick="closeCheckoutModal()">Cancel</button>
       <button class="btn" id="confirm-pay-btn" onclick="confirmAndSendOrder()">Confirm & Pay</button>
     </div>
-    <p class="small-note">✅ Order will be sent directly via Telegram.</p>
+    <p class="small-note">You will be redirected to a Google Form to submit your TRX ID.</p>
   </div>
 </div>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-const TELEGRAM_BOT_TOKEN = "8327215930:AAF96m2SbbhrYu5devcHXu_Q16lcp-y8Hqk";
+/* ----------------- LOGIN / SIGNUP ------------------ */
+function toggleAuth() {
+  const title = document.getElementById("auth-title");
+  const btn = document.querySelector("#auth-section button");
+  const switchText = document.getElementById("auth-switch");
+
+  if (title.textContent.includes("Login")) {
+    title.textContent = "Create an Account";
+    btn.textContent = "Sign Up";
+    switchText.innerHTML = 'Already have an account? <a onclick="toggleAuth()">Login</a>';
+  } else {
+    title.textContent = "Login to Continue";
+    btn.textContent = "Login";
+    switchText.innerHTML = 'Don\'t have an account? <a onclick="toggleAuth()">Sign Up</a>';
+  }
+}
+
+function handleAuth() {
+  const username = document.getElementById("auth-username").value.trim();
+  const password = document.getElementById("auth-password").value.trim();
+  const error = document.getElementById("auth-error");
+
+  if (!username || !password) {
+    error.textContent = "Please fill out all fields!";
+    return;
+  }
+
+  const title = document.getElementById("auth-title").textContent;
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  if (title.includes("Create")) {
+    if (users.find(u => u.username === username)) {
+      error.textContent = "Username already exists!";
+      return;
+    }
+    users.push({ username, password });
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("loggedInUser", username);
+    loadUser();
+  } else {
+    const found = users.find(u => u.username === username && u.password === password);
+    if (found) {
+      localStorage.setItem("loggedInUser", username);
+      loadUser();
+    } else {
+      error.textContent = "Invalid username or password!";
+    }
+  }
+}
+
+function loadUser() {
+  const user = localStorage.getItem("loggedInUser");
+  if (user) {
+    document.getElementById("user-info").innerHTML = `👤 ${user} | <a style='color:#f44;cursor:pointer' onclick='logout()'>Logout</a>`;
+    document.getElementById("auth-section").style.display = "none";
+    showShop();
+  } else {
+    document.getElementById("user-info").innerHTML = "";
+    document.getElementById("auth-section").style.display = "block";
+    hideAllSections();
+  }
+}
+
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  loadUser();
+}
+
+/* ----------------- SHOP & CART ------------------ */
+const TELEGRAM_BOT_TOKEN = "8327215930:AAF96m2SbbhrYu5devcHXu_Q16lcp-y8Hqk"; 
 const TELEGRAM_CHAT_ID = "7498066483";
+const SERVERLESS_URL = "https://acestore-orders.vercel.app/api/create-order"; // <-- Add your serverless URL here
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScTSThg_jtbqCnmKreArJEc4fiPVwZqSxEz3ukwLaBj9Xduhg/viewform?usp=pp_url";
+const FORM_ENTRY_ORDER = "entry.472617341";
+const FORM_ENTRY_TOTAL = "entry.1689651769";
+const FORM_ENTRY_NAME  = "entry.1026182999";
+const FORM_ENTRY_PHONE = "entry.2048302734";
 
 const PRODUCTS = [
-  { id:"01", name:"Weekly Lite", price:50, img:"https://raw.githubusercontent.com/Alinowshademon/Acestore/refs/heads/main/1757157700.jpg" },
-  { id:"02", name:"Weekly", price:170, img:"https://raw.githubusercontent.com/Alinowshademon/Acestore/refs/heads/main/1753834804.png" },
-  { id:"03", name:" Monthly", price:800, img:"https://raw.githubusercontent.com/Alinowshademon/Acestore/refs/heads/main/1753834812.png" },
+  { id: "jacket", name: "Stylish Jacket", price: 1500, img: "https://m.media-amazon.com/images/I/51oWgroI5PL._UY1000_.jpg" },
+  { id: "sneakers", name: "Cool Sneakers", price: 1200, img: "https://i.pinimg.com/736x/51/12/96/511296d23d9358a154a4872e25289917.jpg" },
+  { id: "watch", name: "Classic Watch", price: 600, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWBKhuYEPwT7QuCwlYnU_y1BeShsLx675Zts8p__Gfv06Y9GhB4lswSL4J&s=10" },
 ];
 
 let cart = [];
-let loggedInUser = null;
 
-// Render products
-function renderProducts(){
+function renderProducts() {
   const container = document.getElementById("products-list");
-  container.innerHTML="";
-  PRODUCTS.forEach(p=>{
-    const el=document.createElement("div");
-    el.className="product";
-    el.innerHTML=`<img src="${p.img}" alt="${p.name}">
+  container.innerHTML = "";
+  PRODUCTS.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "product";
+    el.innerHTML = `
+      <img src="${p.img}" alt="${p.name}">
       <h3>${p.name}</h3>
       <div class="price">৳${p.price}</div>
-      <button class="btn" onclick="addToCart('${p.name}',${p.price})">Add to Cart</button>`;
+      <button class="btn" onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+    `;
     container.appendChild(el);
   });
 }
 renderProducts();
 
-// Cart functions
-function addToCart(name,price){ cart.push({name,price}); updateCart(); updateCheckoutButton(); }
-function updateCart(){
-  document.getElementById("cart-count").textContent=cart.length;
-  const tbody=document.getElementById("cart-items");
-  tbody.innerHTML="";
-  let total=0;
-  cart.forEach((item,i)=>{
-    total+=item.price;
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${item.name}</td><td>৳${item.price.toFixed(2)}</td><td><button class="remove-btn" onclick="removeItem(${i})">Remove</button></td>`;
+function addToCart(name, price) {
+  cart.push({ name, price });
+  updateCart();
+}
+
+function updateCart() {
+  document.getElementById("cart-count").textContent = cart.length;
+  const tbody = document.getElementById("cart-items");
+  tbody.innerHTML = "";
+  let total = 0;
+  cart.forEach((item, i) => {
+    total += item.price;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${item.name}</td><td>৳${item.price.toFixed(2)}</td>
+      <td><button class="remove-btn" onclick="removeItem(${i})">Remove</button></td>`;
     tbody.appendChild(tr);
   });
-  document.getElementById("cart-total").textContent="৳"+total.toFixed(2);
+  document.getElementById("cart-total").textContent = "৳" + total.toFixed(2);
 }
-function removeItem(i){ cart.splice(i,1); updateCart(); updateCheckoutButton(); }
 
-// Navigation
-function hideAllSections(){
+function removeItem(i) { cart.splice(i, 1); updateCart(); }
+
+function showShop() { hideAllSections(); document.getElementById("shop").style.display="block"; }
+function showCart() { hideAllSections(); document.getElementById("cart").style.display="block"; }
+function showConfirmedOrders() { hideAllSections(); document.getElementById("confirmed-orders").style.display="block"; }
+function hideAllSections() {
   document.getElementById("shop").style.display="none";
   document.getElementById("cart").style.display="none";
   document.getElementById("confirmed-orders").style.display="none";
 }
-function showShop(){ hideAllSections(); document.getElementById("shop").style.display="block"; }
-function showCart(){ hideAllSections(); document.getElementById("cart").style.display="block"; }
-function showConfirmedOrders(){ hideAllSections(); document.getElementById("confirmed-orders").style.display="block"; }
 
-// Update checkout button state
-function updateCheckoutButton(){
-  const btn = document.getElementById("btn-checkout");
-  btn.disabled = cart.length === 0 || !loggedInUser;
+function openCheckoutModal() { 
+  if(cart.length===0) return alert("Cart is empty!");
+  if(!localStorage.getItem("loggedInUser")) return alert("Please log in first!");
+  document.getElementById("checkout-modal").style.display="flex"; 
 }
+function closeCheckoutModal() { document.getElementById("checkout-modal").style.display="none"; }
 
-// Google Login
-function handleCredentialResponse(response){
-  const data = JSON.parse(atob(response.credential.split(".")[1]));
-  loggedInUser = {name: data.name, email: data.email};
-  document.getElementById("google-login-container").innerHTML = `Hello, ${data.name}`;
-  updateCheckoutButton();
-}
+async function confirmAndSendOrder() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const userId = localStorage.getItem("loggedInUser");
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  const orderDetails = cart.map(it => `${it.name} - ৳${it.price.toFixed(2)}`).join(", ");
 
-window.onload=function(){
-  google.accounts.id.initialize({
-    client_id:"16621265910-o0abnq301dpqg39oae8kmbi82iktuni4.apps.googleusercontent.com",
-    callback:handleCredentialResponse
-  });
-  google.accounts.id.renderButton(
-    document.querySelector(".g_id_signin"),
-    { theme:"outline", size:"large" }
-  );
-  google.accounts.id.prompt();
-}
+  // 1️⃣ Send to Google Form
+  const prefillUrl = buildPrefilledFormUrl(orderDetails, total, name, phone);
+  window.open(prefillUrl, "_blank");
 
-// Checkout modal
-function openCheckoutModal(){
-  document.getElementById("checkout-modal").style.display="flex";
-  document.getElementById("cust-name").value=loggedInUser.name;
-  document.getElementById("cust-email").value=loggedInUser.email;
-}
-function closeCheckoutModal(){ document.getElementById("checkout-modal").style.display="none"; }
+  // 2️⃣ Send to Telegram
+  document.getElementById("order-status").textContent = "Sending order to Telegram...";
+  const btn = document.getElementById("confirm-pay-btn");
+  btn.disabled = true;
 
-// Confirm order
-async function confirmAndSendOrder(){
-  const name=document.getElementById("cust-name").value.trim();
-  const email=document.getElementById("cust-email").value.trim();
-  const phone=document.getElementById("cust-phone").value.trim();
-  const uid=document.getElementById("cust-uid").value.trim();
-  const total=cart.reduce((s,i)=>s+i.price,0);
-  const orderDetails=cart.map(i=>`${i.name} - ৳${i.price.toFixed(2)}`).join(", ");
-  const btn=document.getElementById("confirm-pay-btn");
-  btn.disabled=true;
-  document.getElementById("order-status").textContent="Sending order to Telegram...";
-
-  const message=`New Order Received:
-Customer: ${name}
-Email: ${email}
-Phone: ${phone}
-UID: ${uid}
+  const message = `
+New Order Received:
+Customer: ${name || "Guest"}
+UserID: ${userId}
+Phone: ${phone || "N/A"}
 Order: ${orderDetails}
 Total: ৳${total.toFixed(2)}
-Time: ${new Date().toLocaleString()}`;
+Time: ${new Date().toLocaleString()}
+`;
 
-  try{
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({chat_id:TELEGRAM_CHAT_ID,text:message})
+  try {
+    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: message })
     });
-    document.getElementById("order-status").textContent="✅ Order recorded successfully.";
-    cart=[];
+    document.getElementById("order-status").textContent = "✅ Order sent!";
+
+    // 3️⃣ Send to Serverless URL
+    await fetch(SERVERLESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        name,
+        phone,
+        total,
+        orderDetails,
+        time: new Date().toISOString()
+      })
+    });
+
+    cart = [];
     updateCart();
-    updateCheckoutButton();
     closeCheckoutModal();
-  }catch(err){
-    document.getElementById("order-status").textContent="❌ Telegram error: "+err.message;
-  }finally{ btn.disabled=false; }
+  } catch (err) {
+    document.getElementById("order-status").textContent = "❌ Error: " + err.message;
+  } finally {
+    btn.disabled = false;
+  }
 }
 
-showShop();
+function buildPrefilledFormUrl(orderDetails, total, name, phone) {
+  const params = new URLSearchParams();
+  params.append(FORM_ENTRY_ORDER, orderDetails);
+  params.append(FORM_ENTRY_TOTAL, total.toFixed(2));
+  params.append(FORM_ENTRY_NAME, name);
+  params.append(FORM_ENTRY_PHONE, phone);
+  return GOOGLE_FORM_URL + "&" + params.toString();
+}
+
+loadUser();
 updateCart();
-updateCheckoutButton();
 </script>
-</body>
-</html>
